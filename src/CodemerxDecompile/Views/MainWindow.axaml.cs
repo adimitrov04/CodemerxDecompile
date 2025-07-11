@@ -42,7 +42,7 @@ public partial class MainWindow : Window
 {
     internal static readonly TextSegmentCollection<ReferenceTextSegment> references = new();
     private static MainWindowViewModel viewModel;
-    
+
     public MainWindow(ILogger<MainWindow> logger, MainWindowViewModel mainWindowViewModel,
         IAnalyticsService analyticsService, IAutoUpdateService autoUpdateService, IAppInformationProvider appInformationProvider)
     {

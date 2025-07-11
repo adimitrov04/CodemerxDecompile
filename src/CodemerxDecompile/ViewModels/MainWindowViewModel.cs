@@ -51,7 +51,7 @@ using Telerik.JustDecompiler.Languages.VisualBasic;
 
 namespace CodemerxDecompile.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ObservableObject, IMainWindowViewModel
 {
     private const string CSharpName = "C#";
     private const string VisualBasicName = "VB.NET";
@@ -74,7 +74,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     private readonly SearchService searchService = new();
     private readonly Debouncer searchDebouncer = new(TimeSpan.FromMilliseconds(500));
-
+    
     private TypeDefinition? currentTypeDefinition;
     private DecompiledTypeMetadata? currentDecompiledTypeMetadata;
     private bool isBackForwardNavigation = false;
@@ -513,7 +513,21 @@ public partial class MainWindowViewModel : ObservableObject
         
         GlobalAssemblyResolver.Instance.ClearCache();
     }
+    
+    [RelayCommand(CanExecute = nameof(NodeIsAssembly))]
+    private void RemoveAssembly(Node toRemove)
+    {
+        var selectedAssemblyNode = (AssemblyNode)toRemove;
+        var assemblyDefinition = selectedAssemblyNode.AssemblyDefinition;
 
+        assemblies.Remove(assemblyDefinition);
+        AssemblyNodes.Remove(selectedAssemblyNode);
+    
+        SelectedNode = null;
+    }
+    
+    private bool NodeIsAssembly(Node node) => node is AssemblyNode;
+    
     private bool CanClearAssemblyList() => assemblies.Any();
 
     partial void OnSelectedNodeChanged(Node? oldNode, Node? newNode)
