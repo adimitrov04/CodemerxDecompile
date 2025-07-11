@@ -89,7 +89,7 @@
             <Menu DockPanel.Dock="Top"
                   IsVisible="{OnPlatform Windows='true', Linux='true', macOS='false'}">
                 <MenuItem Header="_Assembly">
-                    <MenuItem Header="_Load Assembly..."
+                    <MenuItem Header="_Open Assembly..."
                               Command="{Binding OpenFileCommand}"
                               HotKey="Ctrl+O"
                               InputGesture="Ctrl+O" />
