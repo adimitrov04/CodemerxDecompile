@@ -514,7 +514,7 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
         GlobalAssemblyResolver.Instance.ClearCache();
     }
     
-    [RelayCommand(CanExecute = nameof(NodeIsAssembly))]
+    [RelayCommand(CanExecute = nameof(CanRemoveAssembly))]
     private void RemoveAssembly(Node toRemove)
     {
         var selectedAssemblyNode = (AssemblyNode)toRemove;
@@ -526,7 +526,7 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
         SelectedNode = null;
     }
     
-    private bool NodeIsAssembly(Node node) => node is AssemblyNode;
+    private bool CanRemoveAssembly(Node node) => node is AssemblyNode;
     
     private bool CanClearAssemblyList() => assemblies.Any();
 

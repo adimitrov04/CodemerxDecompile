@@ -41,12 +41,16 @@
     <NativeMenu.Menu>
         <NativeMenu>
             <NativeMenuItem Header="Assembly">
-                <NativeMenu>
+                <NativeMenu Opening="NativeMenu_OnOpening">
                     <NativeMenuItem Header="Open Assembly..."
                                     Command="{Binding OpenFileCommand}"
                                     Gesture="Cmd+O" />
                     <NativeMenuItemSeparator />
-                    <NativeMenuItem Header="Close All"
+                    <NativeMenuItem Header="Remove Selected"
+                                    Command="{Binding RemoveAssemblyCommand}"
+                                    CommandParameter="{Binding SelectedNode}"
+                                    Gesture="Cmd+Back"/>
+                    <NativeMenuItem Header="Remove All"
                                     Command="{Binding ClearAssemblyListCommand}" />
                 </NativeMenu>
             </NativeMenuItem>
@@ -94,7 +98,12 @@
                               HotKey="Ctrl+O"
                               InputGesture="Ctrl+O" />
                     <Separator/>
-                    <MenuItem Header="_Close All"
+                    <MenuItem Header="_Remove Selected"
+                              Command="{Binding RemoveAssemblyCommand}"
+                              CommandParameter="{Binding SelectedNode}"
+                              HotKey="Delete"
+                              InputGesture="Ctrl+Delete" />
+                    <MenuItem Header="_Remove All"
                               Command="{Binding ClearAssemblyListCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Navigate">
@@ -168,7 +177,7 @@
                         Open Assembly
                     </Button>
                     <Button Command="{Binding ClearAssemblyListCommand}">
-                        Close All
+                        Remove All
                     </Button>
 
                     <Border Classes="separator" />
@@ -267,14 +276,15 @@
                                 
                                 <TreeView.DataTemplates>
                                     <TreeDataTemplate DataType="nodes:AssemblyNode" ItemsSource="{Binding Children}">
-                                        <!-- Background color here is set to transparent, because otherwise the user is only able to right-click the TextBlock -->
+                                        <!-- Background color here is set to transparent, because otherwise the user is only able to right-click
+                                        the TextBlock and not the surrounding whitespace -->
                                         <StackPanel Orientation="Horizontal" Background="Transparent">
                                             <Svg Path="/Assets/Assembly.svg" />
                                             <TextBlock Text="{Binding Name}"/>
                                             
                                             <StackPanel.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="Close"
+                                                    <MenuItem Header="Remove Assembly"
                                                               Command="{Binding $parent[TreeView].((vm:IMainWindowViewModel)DataContext).RemoveAssemblyCommand}"
                                                               CommandParameter="{Binding .}"/>
                                                 </ContextMenu>
