@@ -102,7 +102,7 @@
                               Command="{Binding RemoveAssemblyCommand}"
                               CommandParameter="{Binding SelectedNode}"
                               HotKey="Delete"
-                              InputGesture="Ctrl+Delete" />
+                              InputGesture="Delete" />
                     <MenuItem Header="_Remove All"
                               Command="{Binding ClearAssemblyListCommand}" />
                 </MenuItem>
