@@ -86,20 +86,34 @@
             </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
+    
+    <!-- Keyboard shortcuts for Win and Linux are done this way, as opposed to being attached to the menu bar items,
+    because Avalonia menus have issues with hotkeys and only update CanExecute on their attached command once the menu
+    itself is open, which makes keyboard shortcuts act unpredictably. However, this problem doesn't exist with the macOS
+    native menu.
+    
+    GitHub issue on the problem: https://github.com/AvaloniaUI/Avalonia/issues/2441 -->
+    <Window.KeyBindings>
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+O', Linux='Ctrl+O', macOS='None'}" Command="{Binding OpenFileCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Delete', Linux='Delete', macOS='None'}" Command="{Binding RemoveSelectedAssemblyCommand}" />
+        
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+-', Linux='Ctrl+-', macOS='None'}" Command="{Binding BackCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+-', Linux='Ctrl+Shift+-', macOS='None'}" Command="{Binding ForwardCommand}" />
+        
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+F', Linux='Ctrl+Shift+F', macOS='None'}" Command="{Binding OpenSearchPaneCommand}" />
+    </Window.KeyBindings>
 
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top"
-                  IsVisible="{OnPlatform Windows='true', Linux='true', macOS='true'}">
+                  IsVisible="{OnPlatform Windows='true', Linux='true', macOS='false'}">
                 <MenuItem Header="_Assembly">
                     <MenuItem Header="_Open Assembly..."
                               Command="{Binding OpenFileCommand}"
-                              HotKey="Ctrl+O"
                               InputGesture="Ctrl+O" />
                     <Separator/>
                     <MenuItem Header="_Remove Selected"
                               Command="{Binding RemoveSelectedAssemblyCommand}"
-                              HotKey="Delete"
                               InputGesture="Delete" />
                 <MenuItem Header="_Remove All"
                           Command="{Binding ClearAssemblyListCommand}" />
@@ -107,16 +121,13 @@
                 <MenuItem Header="_Navigate">
                     <MenuItem Header="_Back"
                               Command="{Binding BackCommand}"
-                              HotKey="Ctrl+-"
                               InputGesture="Ctrl+-" />
                     <MenuItem Header="_Forward"
                               Command="{Binding ForwardCommand}"
-                              HotKey="Ctrl+Shift+-"
                               InputGesture="Ctrl+Shift+-" />
                     <Separator />
                     <MenuItem Header="_Search"
                               Command="{Binding OpenSearchPaneCommand}"
-                              HotKey="Ctrl+Shift+F"
                               InputGesture="Ctrl+Shift+F" />
                 </MenuItem>
                 <MenuItem Header="_Tools">
