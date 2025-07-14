@@ -514,19 +514,20 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
         GlobalAssemblyResolver.Instance.ClearCache();
     }
     
-    [RelayCommand(CanExecute = nameof(CanRemoveAssembly))]
-    private void RemoveAssembly(Node toRemove)
+    [RelayCommand(CanExecute = nameof(CanRemoveSelectedAssembly))]
+    private void RemoveSelectedAssembly()
     {
-        var selectedAssemblyNode = (AssemblyNode)toRemove;
+        var selectedAssemblyNode = SelectedNode as AssemblyNode;
         var assemblyDefinition = selectedAssemblyNode.AssemblyDefinition;
 
         assemblies.Remove(assemblyDefinition);
         AssemblyNodes.Remove(selectedAssemblyNode);
     
         SelectedNode = null;
+        ClearAssemblyListCommand.NotifyCanExecuteChanged();
     }
     
-    private bool CanRemoveAssembly(Node node) => node is AssemblyNode;
+    private bool CanRemoveSelectedAssembly() => SelectedNode is AssemblyNode;
     
     private bool CanClearAssemblyList() => assemblies.Any();
 
@@ -550,6 +551,7 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
         Decompile(newNode, false);
 
         isBackForwardNavigation = false;
+        RemoveSelectedAssemblyCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnSelectedLanguageChanged(Language value)

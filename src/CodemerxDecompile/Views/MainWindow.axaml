@@ -41,14 +41,13 @@
     <NativeMenu.Menu>
         <NativeMenu>
             <NativeMenuItem Header="Assembly">
-                <NativeMenu Opening="NativeMenu_OnOpening">
+                <NativeMenu>
                     <NativeMenuItem Header="Open Assembly..."
                                     Command="{Binding OpenFileCommand}"
                                     Gesture="Cmd+O" />
                     <NativeMenuItemSeparator />
                     <NativeMenuItem Header="Remove Selected"
-                                    Command="{Binding RemoveAssemblyCommand}"
-                                    CommandParameter="{Binding SelectedNode}"
+                                    Command="{Binding RemoveSelectedAssemblyCommand}"
                                     Gesture="Cmd+Back"/>
                     <NativeMenuItem Header="Remove All"
                                     Command="{Binding ClearAssemblyListCommand}" />
@@ -91,7 +90,7 @@
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top"
-                  IsVisible="{OnPlatform Windows='true', Linux='true', macOS='false'}">
+                  IsVisible="{OnPlatform Windows='true', Linux='true', macOS='true'}">
                 <MenuItem Header="_Assembly">
                     <MenuItem Header="_Open Assembly..."
                               Command="{Binding OpenFileCommand}"
@@ -99,12 +98,11 @@
                               InputGesture="Ctrl+O" />
                     <Separator/>
                     <MenuItem Header="_Remove Selected"
-                              Command="{Binding RemoveAssemblyCommand}"
-                              CommandParameter="{Binding SelectedNode}"
+                              Command="{Binding RemoveSelectedAssemblyCommand}"
                               HotKey="Delete"
                               InputGesture="Delete" />
-                    <MenuItem Header="_Remove All"
-                              Command="{Binding ClearAssemblyListCommand}" />
+                <MenuItem Header="_Remove All"
+                          Command="{Binding ClearAssemblyListCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Navigate">
                     <MenuItem Header="_Back"
@@ -285,8 +283,7 @@
                                             <StackPanel.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Header="Remove Assembly"
-                                                              Command="{Binding $parent[TreeView].((vm:IMainWindowViewModel)DataContext).RemoveAssemblyCommand}"
-                                                              CommandParameter="{Binding .}"/>
+                                                              Command="{Binding $parent[TreeView].((vm:IMainWindowViewModel)DataContext).RemoveSelectedAssemblyCommand}"/>
                                                 </ContextMenu>
                                             </StackPanel.ContextMenu>
                                         </StackPanel>
@@ -426,84 +423,98 @@
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:EventNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/EventPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:EventTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/EventPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:FieldNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/FieldPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:FieldTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/FieldPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:PropertyNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/PropertyPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:PropertyTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/PropertyPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:MethodNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/MethodPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:MethodReturnTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/MethodPublic.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:ParameterNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/Parameter.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:ParameterTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/Parameter.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:VariableNameSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/LocalVariable.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:VariableTypeSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/LocalVariable.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:StringLiteralSearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <Svg Path="/Assets/String.svg" />
                                                 <TextBlock Text="{Binding MatchedString}" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        
                                         <DataTemplate DataType="searchResults:SearchResult">
                                             <StackPanel Orientation="Horizontal">
                                                 <!-- Used to keep the space unoccupied and align all elements vertically -->

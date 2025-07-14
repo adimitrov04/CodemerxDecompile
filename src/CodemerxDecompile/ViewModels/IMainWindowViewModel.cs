@@ -7,5 +7,5 @@ namespace CodemerxDecompile.ViewModels;
 public interface IMainWindowViewModel
 {
     ObservableCollection<AssemblyNode> AssemblyNodes { get; }
-    IRelayCommand<Node> RemoveAssemblyCommand { get; }
+    IRelayCommand RemoveSelectedAssemblyCommand { get; }
 }

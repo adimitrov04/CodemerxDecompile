@@ -324,12 +324,6 @@ public partial class MainWindow : Window
             base.OnPointerReleased(e);
         }
     }
-
-    // Updates the native menu on the currently selected node, since otherwise it wouldn't update when selection was changed
-    private void NativeMenu_OnOpening(object? sender, EventArgs e)
-    {
-        viewModel.RemoveAssemblyCommand.NotifyCanExecuteChanged();
-    }
 }
 
 public class ReferenceTextSegment : TextSegment
