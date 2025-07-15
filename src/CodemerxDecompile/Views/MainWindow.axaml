@@ -46,7 +46,7 @@
                                     Command="{Binding OpenFileCommand}"
                                     Gesture="Cmd+O" />
                     <NativeMenuItemSeparator />
-                    <NativeMenuItem Header="Remove Selected"
+                    <NativeMenuItem Header="Remove Selected Assembly"
                                     Command="{Binding RemoveSelectedAssemblyCommand}"
                                     Gesture="Cmd+Back"/>
                     <NativeMenuItem Header="Remove All"
@@ -94,13 +94,18 @@
     
     GitHub issue on the problem: https://github.com/AvaloniaUI/Avalonia/issues/2441 -->
     <Window.KeyBindings>
-        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+O', Linux='Ctrl+O', macOS='None'}" Command="{Binding OpenFileCommand}" />
-        <KeyBinding Gesture="{OnPlatform Windows='Delete', Linux='Delete', macOS='None'}" Command="{Binding RemoveSelectedAssemblyCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+O', Linux='Ctrl+O', macOS='None'}" 
+                    Command="{Binding OpenFileCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Delete', Linux='Delete', macOS='None'}"
+                    Command="{Binding RemoveSelectedAssemblyCommand}" />
         
-        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+-', Linux='Ctrl+-', macOS='None'}" Command="{Binding BackCommand}" />
-        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+-', Linux='Ctrl+Shift+-', macOS='None'}" Command="{Binding ForwardCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+-', Linux='Ctrl+-', macOS='None'}" 
+                    Command="{Binding BackCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+-', Linux='Ctrl+Shift+-', macOS='None'}" 
+                    Command="{Binding ForwardCommand}" />
         
-        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+F', Linux='Ctrl+Shift+F', macOS='None'}" Command="{Binding OpenSearchPaneCommand}" />
+        <KeyBinding Gesture="{OnPlatform Windows='Ctrl+Shift+F', Linux='Ctrl+Shift+F', macOS='None'}"
+                    Command="{Binding OpenSearchPaneCommand}" />
     </Window.KeyBindings>
 
     <Grid>
@@ -112,7 +117,7 @@
                               Command="{Binding OpenFileCommand}"
                               InputGesture="Ctrl+O" />
                     <Separator/>
-                    <MenuItem Header="_Remove Selected"
+                    <MenuItem Header="_Remove Selected Assembly"
                               Command="{Binding RemoveSelectedAssemblyCommand}"
                               InputGesture="Delete" />
                 <MenuItem Header="_Remove All"

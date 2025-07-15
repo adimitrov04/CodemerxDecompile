@@ -522,9 +522,32 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
 
         assemblies.Remove(assemblyDefinition);
         AssemblyNodes.Remove(selectedAssemblyNode);
+
+        var assemblyTypes = assemblyDefinition.MainModule.Types;
+        foreach (var typeDefinition in assemblyTypes)
+        {
+            ClearMemberToNodeMap(typeDefinition);
+        }
     
         SelectedNode = null;
         ClearAssemblyListCommand.NotifyCanExecuteChanged();
+
+        void ClearMemberToNodeMap(TypeDefinition typeDefinition)
+        {
+            var members = typeDefinition.GetMembersUnordered(ShowCompilerGeneratedMembers);
+            foreach (var member in members)
+            {
+                memberDefinitionToNodeMap.Remove(member);
+            }
+            
+            var nestedTypes = typeDefinition.NestedTypes;
+            foreach (var nestedType in nestedTypes)
+            {
+                ClearMemberToNodeMap(nestedType);
+            }
+            
+            memberDefinitionToNodeMap.Remove(typeDefinition);
+        }
     }
     
     private bool CanRemoveSelectedAssembly() => SelectedNode is AssemblyNode;
