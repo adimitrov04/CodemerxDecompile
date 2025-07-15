@@ -138,6 +138,7 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
 
     public ObservableCollection<SearchResult> SearchResults { get; } = new();
 
+    public bool TreeViewSelected => SelectedPaneIndex == 0;
     public bool SearchPaneSelected => SelectedPaneIndex == 1;
 
     internal void SelectNodeByMemberReference(MemberReference memberReference)
@@ -550,9 +551,9 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
         }
     }
     
-    private bool CanRemoveSelectedAssembly() => SelectedNode is AssemblyNode;
+    private bool CanRemoveSelectedAssembly() => SelectedNode is AssemblyNode && TreeViewSelected;
     
-    private bool CanClearAssemblyList() => assemblies.Any();
+    private bool CanClearAssemblyList() => assemblies.Any() && TreeViewSelected;
 
     partial void OnSelectedNodeChanged(Node? oldNode, Node? newNode)
     {
@@ -756,16 +757,19 @@ public partial class MainWindowViewModel : ObservableObject, IMainWindowViewMode
 
     partial void OnSelectedPaneIndexChanged(int _)
     {
-        if (!SearchPaneSelected)
-            return;
-        
-        // TODO: Nasty hack. Postponing the Focus() call enough to ensure the text box is rendered and can be focused.
-        Dispatcher.UIThread.Post(() =>
+        if (SearchPaneSelected)
         {
-            var mainWindow = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow as MainWindow;
-            mainWindow.SearchTextBox.SelectAll();
-            mainWindow.SearchTextBox.Focus();
-        });
+            // TODO: Nasty hack. Postponing the Focus() call enough to ensure the text box is rendered and can be focused.
+            Dispatcher.UIThread.Post(() =>
+            {
+                var mainWindow = (App.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)!.MainWindow as MainWindow;
+                mainWindow.SearchTextBox.SelectAll();
+                mainWindow.SearchTextBox.Focus();
+            });
+        }
+        
+        RemoveSelectedAssemblyCommand.NotifyCanExecuteChanged();
+        ClearAssemblyListCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnSearchTextChanged(string value)
